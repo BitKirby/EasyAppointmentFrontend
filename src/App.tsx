@@ -1,6 +1,10 @@
 import { dataProvider } from "./dataProvider";
 import { Admin, Resource } from "react-admin";
-import { CampusList, CampusEdit, CampusCreate } from "./component/campus.tsx";
+import {
+    CampusList,
+    CampusEdit,
+    CampusCreate
+} from "./component/campus.tsx";
 import {
   DepartmentsList,
   DepartmentsEdit,

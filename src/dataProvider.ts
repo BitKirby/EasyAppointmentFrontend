@@ -7,14 +7,29 @@ const httpClient = fetchUtils.fetchJson;
 
 export const dataProvider: DataProvider = {
   getList: (resource, params) => {
+    // 处理 filter 参数
     const query =
       params.filter && Object.keys(params.filter).length > 0
         ? JSON.stringify(params.filter)
         : null;
 
-    const url = query
-      ? `${apiUrl}/${resource}/search?${stringify({ filter: query })}`
-      : `${apiUrl}/${resource}/`;
+    // 添加 order, page, perPage, sort 参数
+    const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+    const { field, order } = params.sort || { field: "id", order: "ASC" }; // 提供默认值
+
+    console.log(params);
+
+    const queryParams = {
+      filter: query,
+      order: order,
+      page: page,
+      per_page: perPage, //和后端统一
+      sort: field,
+    };
+    console.log(queryParams);
+
+    // 根据参数生成 URL
+    const url = `${apiUrl}/${resource}/search?${stringify(queryParams)}`;
 
     return httpClient(url).then(({ json }) => {
       const dataKey = resource; // 假设字段名与资源名一致

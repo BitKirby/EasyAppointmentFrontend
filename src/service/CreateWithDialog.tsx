@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { useNotify, useRedirect, useDataProvider } from "react-admin";
+import {
+  useNotify,
+  useRefresh,
+  useDataProvider,
+  SimpleForm,
+} from "react-admin";
 import { Dialog, DialogContent, DialogTitle, Button } from "@mui/material";
 
 interface CreateWithDialogProps {
@@ -13,7 +18,7 @@ export const CreateWithDialog: React.FC<CreateWithDialogProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const redirect = useRedirect();
+  const refresh = useRefresh();
   const dataProvider = useDataProvider(); // 用于提交数据
 
   // 打开和关闭弹窗
@@ -25,9 +30,9 @@ export const CreateWithDialog: React.FC<CreateWithDialogProps> = ({
     dataProvider
       .create(resource, { data }) // 通过 dataProvider 发起 POST 请求
       .then(() => {
-        notify("Record created successfully", { type: "success" });
-        redirect("/", resource);
+        notify("成功新增数据", { type: "success" });
         setOpen(false); // 提交成功后关闭弹窗
+        refresh();
       })
       .catch((error) => {
         notify(`Error: ${error.message}`, { type: "warning" });
@@ -42,7 +47,9 @@ export const CreateWithDialog: React.FC<CreateWithDialogProps> = ({
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>新建项目</DialogTitle>
         <DialogContent>
-          <CreateComponent />
+          <SimpleForm onSubmit={handleSubmit}>
+            <CreateComponent />
+          </SimpleForm>
         </DialogContent>
       </Dialog>
     </>

@@ -1,14 +1,15 @@
 import { dataProvider } from "./dataProvider";
 import { Admin, Resource } from "react-admin";
-import { CampusList, CampusEdit } from "./component/campus.tsx";
+import { CampusList, CampusEdit } from "./component/campus";
 import {
   DepartmentsList,
   DepartmentsEdit,
   DepartmentsCreate,
-} from "./component/departments.tsx";
+} from "./component/departments";
+import { Dashboard } from "./Dashboard";
 
 export const App = () => (
-  <Admin dataProvider={dataProvider}>
+  <Admin dataProvider={dataProvider} dashboard={Dashboard}>
     <Resource
       name="campuses"
       list={CampusList}

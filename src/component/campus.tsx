@@ -46,8 +46,8 @@ export const CampusEdit = () => (
 );
 
 export const CampusCreate = () => (
-  <SimpleForm>
+  <>
     <TextInput source="name" label="校区名称" />
     <TextInput source="description" label="描述" />
-  </SimpleForm>
+  </>
 );

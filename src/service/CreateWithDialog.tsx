@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import {
-  SimpleForm,
-  TextInput,
-  useNotify,
-  useRedirect,
-  useDataProvider,
-} from "react-admin";
+import { useNotify, useRedirect, useDataProvider } from "react-admin";
 import { Dialog, DialogContent, DialogTitle, Button } from "@mui/material";
 
 interface CreateWithDialogProps {
   resource: string;
+  CreateComponent: React.ComponentType;
 }
 
 export const CreateWithDialog: React.FC<CreateWithDialogProps> = ({
   resource,
+  CreateComponent,
 }) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
@@ -44,13 +40,9 @@ export const CreateWithDialog: React.FC<CreateWithDialogProps> = ({
         Create
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        <DialogTitle>Create a new item</DialogTitle>
+        <DialogTitle>新建项目</DialogTitle>
         <DialogContent>
-          {/* SimpleForm 内部已经自动提供 control */}
-          <SimpleForm onSubmit={handleSubmit}>
-            <TextInput source="name" label="Name" />
-            <TextInput source="description" label="Description" />
-          </SimpleForm>
+          <CreateComponent />
         </DialogContent>
       </Dialog>
     </>

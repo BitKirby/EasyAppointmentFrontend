@@ -9,7 +9,6 @@ import {
   DeleteButton,
   TopToolbar,
 } from "react-admin";
-import { MyExportButton } from "../service/MyExportButton";
 import { CreateWithDialog } from "../service/CreateWithDialog";
 
 const campusFilters = [
@@ -19,8 +18,7 @@ const campusFilters = [
 
 const CampusListActions = () => (
   <TopToolbar>
-    <CreateWithDialog resource="campuses" />
-    <MyExportButton resource="campuses" />
+    <CreateWithDialog resource="campuses" CreateComponent={CampusCreate} />
   </TopToolbar>
 );
 
@@ -28,9 +26,9 @@ export const CampusList = () => (
   <List filters={campusFilters} actions={<CampusListActions />}>
     {/* <List> */}
     <Datagrid>
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="description" />
+      <TextField source="id" label="序号" />
+      <TextField source="name" label="校区名称" />
+      <TextField source="description" label="描述" />
       <EditButton />
       <DeleteButton />
     </Datagrid>
@@ -40,9 +38,16 @@ export const CampusList = () => (
 export const CampusEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="id" InputProps={{ disabled: true }} />
-      <TextInput source="name" />
-      <TextInput source="description" />
+      <TextInput source="id" InputProps={{ disabled: true }} label="序号" />
+      <TextInput source="name" label="校区名称" />
+      <TextInput source="description" label="描述" />
     </SimpleForm>
   </Edit>
+);
+
+export const CampusCreate = () => (
+  <SimpleForm>
+    <TextInput source="name" label="校区名称" />
+    <TextInput source="description" label="描述" />
+  </SimpleForm>
 );

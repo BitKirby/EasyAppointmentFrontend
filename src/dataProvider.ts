@@ -17,16 +17,14 @@ export const dataProvider: DataProvider = {
     const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
     const { field, order } = params.sort || { field: "id", order: "ASC" }; // 提供默认值
 
-    console.log(params);
-
     const queryParams = {
+      //和后端统一
       filter: query,
-      order: order,
+      sort_order: order,
       page: page,
-      per_page: perPage, //和后端统一
-      sort: field,
+      per_page: perPage,
+      sort_field: field,
     };
-    console.log(queryParams);
 
     // 根据参数生成 URL
     const url = `${apiUrl}/${resource}/search?${stringify(queryParams)}`;
@@ -34,15 +32,15 @@ export const dataProvider: DataProvider = {
     return httpClient(url).then(({ json }) => {
       const dataKey = resource; // 假设字段名与资源名一致
       return {
-        data: json[dataKey], // 动态访问 API 返回的字段
-        total: json.total_pages * json.per_page, // 计算总条目数
+        data: json.data[dataKey], // 动态访问 API 返回的字段
+        total: json.data.total_pages * json.data.per_page, // 计算总条目数
       };
     });
   },
 
   getOne: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-      data: json,
+      data: json.data,
     })),
 
   getMany: (resource, params) => {
@@ -50,7 +48,7 @@ export const dataProvider: DataProvider = {
       filter: JSON.stringify({ id: params.ids }),
     };
     const url = `${apiUrl}/${resource}?/search${stringify(query)}`;
-    return httpClient(url).then(({ json }) => ({ data: json }));
+    return httpClient(url).then(({ json }) => ({ data: json.data }));
   },
 
   //TODO
@@ -68,7 +66,7 @@ export const dataProvider: DataProvider = {
     const url = `${apiUrl}` + "campuses/search" + `?${stringify(query)}`;
 
     return httpClient(url).then(({ headers, json }) => ({
-      data: json,
+      data: json.data,
       total: parseInt(
         (headers.get("content-range") || "0").split("/").pop() || "0",
         10,
@@ -80,7 +78,7 @@ export const dataProvider: DataProvider = {
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => ({ data: json.data })),
 
   updateMany: (resource, params) => {
     const query = {
@@ -89,7 +87,7 @@ export const dataProvider: DataProvider = {
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => ({ data: json.data }));
   },
 
   create: (resource, params) =>
@@ -103,7 +101,7 @@ export const dataProvider: DataProvider = {
   delete: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "DELETE",
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => ({ data: json.data })),
 
   deleteMany: (resource, params) => {
     const query = {
@@ -111,6 +109,6 @@ export const dataProvider: DataProvider = {
     };
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: "DELETE",
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => ({ data: json.data }));
   },
 };

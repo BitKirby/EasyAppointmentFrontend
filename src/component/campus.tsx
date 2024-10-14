@@ -2,22 +2,30 @@ import {
   List,
   Datagrid,
   TextField,
-  Create,
   Edit,
   TextInput,
   SimpleForm,
   EditButton,
   DeleteButton,
-  ReferenceInput,
+  TopToolbar,
 } from "react-admin";
+import { MyExportButton } from "../service/MyExportButton";
+import { CreateWithDialog } from "../service/CreateWithDialog";
 
 const campusFilters = [
   <TextInput source="name" label="Search" alwaysOn key="id" />,
   //   <ReferenceInput source="id" label="name" reference="name"/>,
 ];
 
+const CampusListActions = () => (
+  <TopToolbar>
+    <CreateWithDialog resource="campuses" />
+    <MyExportButton resource="campuses" />
+  </TopToolbar>
+);
+
 export const CampusList = () => (
-  <List filters={campusFilters}>
+  <List filters={campusFilters} actions={<CampusListActions />}>
     {/* <List> */}
     <Datagrid>
       <TextField source="id" />
@@ -37,13 +45,4 @@ export const CampusEdit = () => (
       <TextInput source="description" />
     </SimpleForm>
   </Edit>
-);
-
-export const CampusCreate = () => (
-  <Create>
-    <SimpleForm>
-      <TextInput source="name" />
-      <TextInput source="description" />
-    </SimpleForm>
-  </Create>
 );

@@ -1,10 +1,6 @@
 import { dataProvider } from "./dataProvider";
 import { Admin, Resource } from "react-admin";
-import {
-    CampusList,
-    CampusEdit,
-    CampusCreate
-} from "./component/campus.tsx";
+import { CampusList, CampusEdit } from "./component/campus.tsx";
 import {
   DepartmentsList,
   DepartmentsEdit,
@@ -17,7 +13,7 @@ export const App = () => (
       name="campuses"
       list={CampusList}
       edit={CampusEdit}
-      create={CampusCreate}
+      // create={CampusCreate}
       // icon={PostIcon}
     />
     <Resource
